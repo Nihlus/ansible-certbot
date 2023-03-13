@@ -92,8 +92,10 @@ def run_module():
     domains = module.params['domains'] if 'domains' in module.params else None
     cert_name = module.params['cert_name'] if 'cert_name' in module.params else None
 
+    certbot = Certbot(module.run_command)
+
     result['ansible_facts']['certbot_certificates'] = list(
-        map(lambda c: c.__dict__, Certbot.certificates(domains, cert_name))
+        map(lambda c: c.__dict__, certbot.certificates(domains, cert_name).certificates)
     )
 
     module.exit_json(**result)
