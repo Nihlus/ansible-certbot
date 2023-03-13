@@ -58,7 +58,8 @@ certbot_certificates:
             - www.example.com
             - domain.example.com
           expiry_date: 2023-05-31 17:45:41+00:00
-          valid_days: 80
+          is_valid: true
+          is_test_cert: false
           certificate_path: /etc/letsencrypt/live/example.com/fullchain.pem
           private_key_path: /etc/letsencrypt/live/example.com/fullchain.pem
 '''
