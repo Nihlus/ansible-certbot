@@ -42,12 +42,24 @@ class Certbot:
     gathering via a Python interface.
     """
 
+    email: str
+    """
+    The email of the user or organization that the certificates will be associated with. This is also the identifier
+    used for agreeing to the terms of service
+    """
+
     command_runner: Callable[[list[str]], tuple[int, str, str]]
     """
     The callable to use when running the certbot command.
     """
 
-    def __init__(self, command_runner: Callable[[list[str]], tuple[int, str, str]] | None = None):
+    def __init__(
+            self,
+            email: str | None = None,
+            command_runner: Callable[[list[str]], tuple[int, str, str]] | None = None
+    ):
+        self.email = email
+
         if command_runner:
             self.command_runner = command_runner
         else:
@@ -85,7 +97,7 @@ class Certbot:
             preferred_chain,
             authentication,
             test_cert
-        )
+        ).with_args(['--email', self.email])
 
         result = self.__run(subcommand)
         return CertbotResult(result, determine_actions_taken(result, subcommand))
@@ -134,7 +146,8 @@ class Certbot:
             preferred_challenges,
             csr,
             cert_path,
-            test_cert)
+            test_cert
+        ).with_args(['--email', self.email])
 
         result = self.__run(subcommand)
         return CertbotResult(result, determine_actions_taken(result, subcommand))

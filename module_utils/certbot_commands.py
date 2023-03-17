@@ -49,15 +49,35 @@ class __CertbotSubcommand:
     The name of the subcommand.
     """
 
+    extra_args: list[str]
+    """
+    Any additional arguments added manually.
+    """
+
     def __init__(self, subcommand: str):
         self.subcommand: str = subcommand
+        self.extra_args = []
+
+    def with_arg(self, arg: str) -> __CertbotSubcommand:
+        """
+        Adds an arbitrary argument to the command.
+        """
+        self.extra_args.append(arg)
+        return self
+
+    def with_args(self, args: list[str]) -> __CertbotSubcommand:
+        """
+        Adds a set of arbitrary arguments to the command.
+        """
+        self.extra_args.extend(args)
+        return self
 
     def build_args(self) -> list[str]:
         """
         Builds appropriate command-line arguments for the subcommand.
         :return: A list of arguments.
         """
-        return [self.subcommand, '-n']
+        return [self.subcommand, '-n', '--agree-tos'] + self.extra_args
 
 
 class __CertbotCertificateAction(__CertbotSubcommand):

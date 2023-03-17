@@ -44,6 +44,12 @@ options:
         required: false
         type: list
         elements: str
+    email:
+        description: 
+             - The email of the person or organization associated with the certificates. 
+             - Only required when creating new certificates.
+        required: false
+        type: str
     eab_kid:
         description: Key Identifier for External Account Binding.
         required: false
@@ -170,6 +176,7 @@ EXAMPLES = r'''
   certbot_certificate:
     cert_name: example.com
     state: present
+    email: certs@example.com
 
 # Use a different authentication scheme
 - name: ensure certificate is present, valid, and installed
@@ -177,6 +184,7 @@ EXAMPLES = r'''
     cert_name: example.com
     authentication: apache
     state: present
+    email: certs@example.com
 
 # Issue or renew named certificate without installing it (certonly)
 - name: ensure certificate is present, valid, and installed
@@ -184,6 +192,7 @@ EXAMPLES = r'''
     cert_name: example.com
     install: false
     state: present
+    email: certs@example.com
     
 # Forcibly renew certificates
 - name: renew certificate (renew)
@@ -255,6 +264,7 @@ def run_module():
         install=dict(type='bool', required=False, default=True),
         cert_name=dict(type='str', required=False, aliases=['name']),
         domains=dict(type='list', required=False, elements='str'),
+        email=dict(type='str', required=False),
         eab_kid=dict(type='str', required=False),
         eab_hmac_key=dict(type='str', required=False),
         keep_until_expiring=dict(type='bool', required=False),
@@ -313,9 +323,9 @@ def run_module():
     module = AnsibleModule(
         argument_spec=module_args,
         required_if=[
-            ('state', 'present', ('authentication',)),
+            ('state', 'present', ('authentication', 'email')),
             ('state', 'renewed', ('authentication',)),
-            ('state', 'revoked', ('authentication', 'reason'))
+            ('state', 'revoked', ('authentication', 'reason')),
         ],
         mutually_exclusive=[
             ('delete_after_revoke', 'no_delete_after_revoke')
@@ -324,7 +334,7 @@ def run_module():
 
     state = module.params['state']
 
-    certbot = Certbot(module.run_command)
+    certbot = Certbot(get_param_or_none(module.params, 'email'), module.run_command)
 
     try:
         certbot_result: CertbotResult
