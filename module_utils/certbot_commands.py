@@ -116,6 +116,11 @@ class __CertbotCertificateAction(__CertbotSubcommand):
     renewal.
     """
 
+    reuse_key: bool | None
+    """
+    Use the same private key as the existing certificate.
+    """
+
     preferred_chain: str | None
     """
     If the CA offers multiple certificate chains, prefer the chain whose topmost certificate was issued from this 
@@ -136,6 +141,7 @@ class __CertbotCertificateAction(__CertbotSubcommand):
             eab_hmac_key: str | None = None,
             cert_name: str | None = None,
             keep_until_expiring: bool | None = None,
+            reuse_key: bool | None = None,
             preferred_chain: str | None = None,
             authentication: CertbotAuthentication | None = None
     ):
@@ -146,6 +152,7 @@ class __CertbotCertificateAction(__CertbotSubcommand):
         self.eab_hmac_key = eab_hmac_key
         self.cert_name = cert_name
         self.keep_until_expiring = keep_until_expiring
+        self.reuse_key = reuse_key
         self.preferred_chain = preferred_chain
         self.authentication = authentication
 
@@ -171,6 +178,9 @@ class __CertbotCertificateAction(__CertbotSubcommand):
 
         if self.keep_until_expiring:
             args.append('--keep-until-expiring')
+
+        if self.reuse_key:
+            args.append('--reuse-key')
 
         if self.preferred_chain:
             args.append('--preferred-chain')
@@ -242,6 +252,7 @@ class CertbotRunSubcommand(__CertbotCertificateAction):
             eab_hmac_key: str | None = None,
             cert_name: str | None = None,
             keep_until_expiring: bool | None = None,
+            reuse_key: bool | None = None,
             preferred_chain: str | None = None,
             authentication: CertbotAuthentication | None = None,
 
@@ -254,6 +265,7 @@ class CertbotRunSubcommand(__CertbotCertificateAction):
             eab_hmac_key,
             cert_name,
             keep_until_expiring,
+            reuse_key,
             preferred_chain,
             authentication
         )
@@ -311,6 +323,7 @@ class CertbotCertOnlySubcommand(__CertbotCertificateAction):
             eab_hmac_key: str | None = None,
             cert_name: str | None = None,
             keep_until_expiring: bool | None = None,
+            reuse_key: bool | None = None,
             preferred_chain: str | None = None,
             authentication: CertbotAuthentication | None = None,
 
@@ -327,6 +340,7 @@ class CertbotCertOnlySubcommand(__CertbotCertificateAction):
             eab_hmac_key,
             cert_name,
             keep_until_expiring,
+            reuse_key,
             preferred_chain,
             authentication
         )

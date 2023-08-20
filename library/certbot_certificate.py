@@ -159,6 +159,11 @@ options:
             - dns-rfc2136
             - dns-route53
             - dns-sakuracloud
+    reuse-key:
+        description: When renewing, use the same private key as the existing certificate
+        required: false
+        type: bool
+        default: false
     break_my_certs:
         description: 
             - Whether to allow replacement of seemingly valid certificates with invalid test certificates. 
@@ -312,6 +317,7 @@ def run_module():
                 'dns-sakuracloud'
             ]
         ),
+        reuse_key=dict(type='bool', required=False),
         break_my_certs=dict(type='bool', required=False)
     )
 
@@ -346,6 +352,7 @@ def run_module():
                     get_param_or_none(module.params, 'eab_hmac_key'),
                     get_param_or_none(module.params, 'cert_name'),
                     get_param_or_none(module.params, 'keep_until_expiring'),
+                    get_param_or_none(module.params, 'reuse_key'),
                     get_param_or_none(module.params, 'preferred_chain'),
                     get_param_or_none(module.params, 'authentication', lambda val: CertbotAuthentication[val]),
                     get_param_or_none(module.params, 'test_cert')
@@ -357,6 +364,7 @@ def run_module():
                     get_param_or_none(module.params, 'eab_hmac_key'),
                     get_param_or_none(module.params, 'cert_name'),
                     get_param_or_none(module.params, 'keep_until_expiring'),
+                    get_param_or_none(module.params, 'reuse_key'),
                     get_param_or_none(module.params, 'preferred_chain'),
                     get_param_or_none(module.params, 'authentication', lambda val: CertbotAuthentication[val]),
                     get_param_or_none(module.params, 'allow_subset_of_names'),
@@ -391,7 +399,7 @@ def run_module():
                 get_param_or_none(module.params, 'no_directory_hooks'),
                 get_param_or_none(module.params, 'disable_renew_updates'),
                 get_param_or_none(module.params, 'no_autorenew'),
-                get_param_or_none(module.params, 'break_my_certs'),
+                get_param_or_none(module.params, 'break_my_certs')
             )
         else:
             raise RuntimeError('Unknown state')
