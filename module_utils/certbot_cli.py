@@ -72,6 +72,7 @@ class Certbot:
             eab_hmac_key: str | None = None,
             cert_name: str | None = None,
             keep_until_expiring: bool | None = None,
+            reuse_key: bool | None = None,
             preferred_chain: str | None = None,
             authentication: CertbotAuthentication | None = None,
             test_cert: bool | None = None
@@ -83,6 +84,7 @@ class Certbot:
         :param eab_hmac_key: The HMAC key for the external account binding.
         :param cert_name: The name of the certificate to issue or renew.
         :param keep_until_expiring: Whether to keep existing certificates as-is until they are due for renewal.
+        :param reuse_key: Whether to reuse the existing private key.
         :param preferred_chain: The Common Name of the root certificate to use when multiple chains are available.
         :param authentication: The authentication scheme to use when issuing or renewing certificates.
         :param test_cert: Whether to use the staging server to issue or renew (invalid) certificates.
@@ -94,6 +96,7 @@ class Certbot:
             eab_hmac_key,
             cert_name,
             keep_until_expiring,
+            reuse_key,
             preferred_chain,
             authentication,
             test_cert
@@ -109,6 +112,7 @@ class Certbot:
             eab_hmac_key: str | None = None,
             cert_name: str | None = None,
             keep_until_expiring: bool | None = None,
+            reuse_key: bool | None = None,
             preferred_chain: str | None = None,
             authentication: CertbotAuthentication | None = None,
             allow_subset_of_names: bool | None = None,
@@ -124,6 +128,7 @@ class Certbot:
         :param eab_hmac_key: The HMAC key for the external account binding.
         :param cert_name: The name of the certificate to issue or renew.
         :param keep_until_expiring: Whether to keep existing certificates as-is until they are due for renewal.
+        :param reuse_key: Whether to reuse the existing private key.
         :param preferred_chain: The Common Name of the root certificate to use when multiple chains are available.
         :param authentication: The authentication scheme to use when issuing or renewing certificates.
         :param allow_subset_of_names: Do not consider failure to obtain authorization for some subset of the domains as
@@ -140,6 +145,7 @@ class Certbot:
             eab_hmac_key,
             cert_name,
             keep_until_expiring,
+            reuse_key,
             preferred_chain,
             authentication,
             allow_subset_of_names,
