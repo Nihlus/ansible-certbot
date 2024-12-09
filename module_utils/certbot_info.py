@@ -293,7 +293,7 @@ def determine_actions_taken(
                 return [CertbotCertificateRenewalInformation(cert_name, True)]
             else:
                 raise RuntimeError("Unknown certificate action")
-        elif 'Certificate not yet due for renewal; no action taken.' in process.stdout:
+        elif 'Certificate not yet due for renewal' in process.stdout:
             if not subcommand.cert_name:
                 raise RuntimeError("Unable to determine certificate name")
 
