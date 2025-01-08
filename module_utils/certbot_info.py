@@ -277,7 +277,7 @@ def determine_actions_taken(
         # Bail out, we don't support any error codes
         process.check_returncode()
 
-        if 'have been saved at' in process.stdout:
+        if 'saved at' in process.stdout:
             cert_name_match = re.search(r'\.+/(?P<cert_name>.+)/fullchain\.pem', process.stdout)
 
             cert_name = subcommand.cert_name
